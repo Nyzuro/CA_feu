@@ -14,8 +14,40 @@ const printRectangle = (width, height) => {
         else line += " ";
       }
     }
-    console.log(line)
+    console.log(line);
   }
 };
 
-printRectangle(3, 2);
+const isValidArguments = (arguments) => {
+  if (arguments.length !== 2) {
+    console.error("Le nombre d'arguments doit etre 2");
+    return;
+  }
+  return arguments;
+};
+
+const isValidNumbers = (numbers) => {
+  for (let i = 0; i < numbers.length; i++) {
+    if (isNaN(numbers[i])) {
+      console.error("Les arguments doivent etre des nombres");
+      return;
+    }
+    numbers[i] = Number(numbers[i]);
+  }
+  return numbers;
+};
+
+const getArguments = () => {
+  const arguments = process.argv.slice(2);
+  return arguments;
+};
+
+const getRectanglePrinted = () => {
+  const arguments = isValidArguments(getArguments());
+  if (!arguments) return;
+  const numbers = isValidNumbers(arguments);
+  if (!numbers) return;
+  printRectangle(numbers[0], numbers[1]);
+};
+
+getRectanglePrinted();
