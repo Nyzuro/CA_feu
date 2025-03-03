@@ -1,5 +1,3 @@
-let result = 0;
-
 const multiplication = (a, b, finalOperation) => {
   return finalOperation.push(a * b);
 };
@@ -30,6 +28,7 @@ const makeFinalOperation = (operation) => {
 };
 
 const calculateFinalOperation = (finalOperation) => {
+  let result = 0;
   for (let i = 0; i < finalOperation.length; i++) {
     if (finalOperation[i] === "+") {
       if (i < 3) {
