@@ -10,37 +10,13 @@ const modulo = (a, b, finalOperation) => {
   return finalOperation.push(a % b);
 };
 
-const lexer = (operation) => {
-  const tokens = [];
-  const tokensTypes = [
-    { type: "NUMBER", regex: /\d+/ }, // Numbers
-    { type: "PLUS", regex: /\+/ }, // Operator +
-    { type: "MINUS", regex: /-/ }, // Operator -
-    { type: "MULTIPLY", regex: /\*/ }, // Operator *
-    { type: "DIVIDE", regex: /\// }, // Operator /;
-    { type: "MODULO", regex: /\%/ }, // Operator %
-    { type: "OPEN PARANTHESIS", regex: /\(/ }, // Open paranthesis
-    { type: "CLOSED PARANTHESIS", regex: /\)/ }, // Closed paranthesis
-  ];
-
-  while (operation.length > 0) {
-    let match = null;
-
-    for (const tokensType of tokensTypes) {
-      match = tokensType.regex.exec(operation[0]);
-      if (match) {
-        tokens.push({ type: tokensType.type, value: match[0] });
-        operation = operation.slice(1);
-        break;
-      }
-    }
-
-    if (!match) {
-      console.error(`Caractère invalide : ${operation[0]}`);
-      return;
+const calculateOperation = (operation) => {
+  while (operation.length > 1) {
+    if (operation.includes("(")) {
+      const startParanthesisIndex = operation.indexOf("(");
+      const endParanthesisIndex = operation.indexOf(")");
     }
   }
-  return tokens;
 };
 
 const isValidArguments = (arguments) => {
@@ -83,8 +59,6 @@ const getOperationResult = () => {
     }
     operation.push(number);
   }
-
-  console.log(lexer(operation));
 };
 
 console.log(getOperationResult());
