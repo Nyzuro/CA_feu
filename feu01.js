@@ -10,59 +10,53 @@ const modulo = (a, b, finalOperation) => {
   return finalOperation.push(a % b);
 };
 
-const makeFinalOperation = (operation) => {
-  const finalOperation = [];
-  for (let i = 0; i < operation.length; i++) {
-    if (operation[i + 1] === "*") {
-      multiplication(operation[i], operation[i + 2], finalOperation);
-      i += 2;
-    } else if (operation[i + 1] === "/") {
-      division(operation[i], operation[i + 2], finalOperation);
-      i += 2;
-    } else if (operation[i + 1] === "%") {
-      modulo(operation[i], operation[i + 2], finalOperation);
-      i += 2;
-    } else finalOperation.push(operation[i]);
-  }
-  return finalOperation;
-};
+const lexer = (operation) => {
+  const tokens = [];
+  const tokensTypes = [
+    { type: "NUMBER", regex: /\d+/ }, // Numbers
+    { type: "PLUS", regex: /\+/ }, // Operator +
+    { type: "MINUS", regex: /-/ }, // Operator -
+    { type: "MULTIPLY", regex: /\*/ }, // Operator *
+    { type: "DIVIDE", regex: /\// }, // Operator /;
+    { type: "MODULO", regex: /\%/ }, // Operator %
+    { type: "OPEN PARANTHESIS", regex: /\(/ }, // Open paranthesis
+    { type: "CLOSED PARANTHESIS", regex: /\)/ }, // Closed paranthesis
+  ];
 
-const calculateFinalOperation = (finalOperation) => {
-  let result = 0;
-  for (let i = 0; i < finalOperation.length; i++) {
-    if (finalOperation[i] === "+") {
-      if (i < 3) {
-        result += finalOperation[i - 1] + finalOperation[i + 1];
-      } else result += finalOperation[i + 1];
+  while (operation.length > 0) {
+    let match = null;
+
+    for (const tokensType of tokensTypes) {
+      match = tokensType.regex.exec(operation[0]);
+      if (match) {
+        tokens.push({ type: tokensType.type, value: match[0] });
+        operation = operation.slice(1);
+        break;
+      }
     }
-    if (finalOperation[i] === "-") {
-      if (i < 3) {
-        result += finalOperation[i - 1] - finalOperation[i + 1];
-      } else result -= finalOperation[i + 1];
+
+    if (!match) {
+      console.error(`Caractère invalide : ${operation[0]}`);
+      return;
     }
   }
-  return result;
+  return tokens;
 };
 
 const isValidArguments = (arguments) => {
-  if (arguments.length < 1) {
-    console.error("Le programme a besoin d'un argument pour fonctionner");
+  if (arguments.length !== 1) {
+    console.error("Le programme a besoin d'une operation pour fonctionner");
     return;
   }
   return arguments;
 };
 
-const isValidNumbers = (numbers, operators) => {
-  for (let i = 0; i < numbers.length; i++) {
-    if (!operators.includes(numbers[i])) {
-      if (isNaN(numbers[i])) {
-        console.error("N'entrez que des nombres");
-        return;
-      }
-      numbers[i] = Number(numbers[i]);
-    }
+const isValidNumber = (number) => {
+  if (isNaN(number)) {
+    console.error("N'entrez que des nombres");
+    return;
   }
-  return numbers;
+  return Number(number);
 };
 
 const getArguments = () => {
@@ -75,14 +69,22 @@ const getOperators = () => {
 };
 
 const getOperationResult = () => {
-  const arguments = isValidArguments(getArguments());
-  if (!arguments) return;
+  const argument = isValidArguments(getArguments());
+  if (!argument) return;
+
+  const operationCleared = argument[0].trim().split(" ");
   const operators = getOperators();
-  const operation = isValidNumbers(arguments, operators);
-  if (!operation) return;
-  const finalOperation = makeFinalOperation(operation);
-  console.log(finalOperation);
-  return calculateFinalOperation(finalOperation);
+  const operation = [];
+
+  for (number of operationCleared) {
+    if (!operators.includes(number)) {
+      number = isValidNumber(number);
+      if (!number) return;
+    }
+    operation.push(number);
+  }
+
+  console.log(lexer(operation));
 };
 
 console.log(getOperationResult());
