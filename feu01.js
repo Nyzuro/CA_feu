@@ -41,7 +41,7 @@ const getArguments = () => {
 };
 
 const getOperators = () => {
-  return ["+", "-", "*", "/", "%"];
+  return ["+", "-", "*", "/", "%", "(", ")"];
 };
 
 const getOperationResult = () => {
