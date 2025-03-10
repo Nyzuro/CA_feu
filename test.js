@@ -1,9 +1,11 @@
-let string = "1";
+const arr = [4, "PLUS", [21 * [1 - [2 / 1]]], "PLUS", 38];
+console.log(arr);
 
-for (let i = 0; i < string.length; i++) {
-  if (string[i] !== "*" && string[i] !== "+") {
-    console.log(string[i]);
-    string[i].replace(string[i], parseInt(string[i]));
-    console.log(string[i]);
+while (arr.length > 1) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === "PLUS") {
+      arr.splice(i - 1, 3, arr[i - 1] + Number(arr[i + 1]));
+    }
   }
 }
+console.log(arr);

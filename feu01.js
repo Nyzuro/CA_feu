@@ -1,22 +1,75 @@
-const multiplication = (a, b, finalOperation) => {
-  return finalOperation.push(a * b);
-};
+const simplifyExpression = (expression) => {
+  const prioritaryOPerators = ["/", "*", "%"];
 
-const division = (a, b, finalOperation) => {
-  return finalOperation.push(a / b);
-};
+  while (expression.some((element) => prioritaryOPerators.includes(element))) {
+    let operationResult = 0;
 
-const modulo = (a, b, finalOperation) => {
-  return finalOperation.push(a % b);
-};
-
-const calculateOperation = (operation) => {
-  while (operation.length > 1) {
-    if (operation.includes("(")) {
-      const startParanthesisIndex = operation.indexOf("(");
-      const endParanthesisIndex = operation.indexOf(")");
+    for (const operator of prioritaryOPerators) {
+      if (expression.includes(operator)) {
+        for (let i = 0; i < expression.length; i++) {
+          if (expression[i] === "/") {
+            operationResult = expression[i - 1] / expression[i + 1];
+            expression.splice(i - 1, 3, operationResult);
+            break;
+          } else if (expression[i] === "*") {
+            operationResult = expression[i - 1] * expression[i + 1];
+            expression.splice(i - 1, 3, operationResult);
+            break;
+          } else if (expression[i] === "%") {
+            operationResult = expression[i - 1] % expression[i + 1];
+            expression.splice(i - 1, 3, operationResult);
+            break;
+          }
+        }
+        break;
+      }
     }
   }
+  return expression;
+};
+
+const calculateExpression = (expression) => {
+  const prioritaryOPerators = ["/", "*", "%"];
+  if (expression.some((element) => prioritaryOPerators.includes(element))) {
+    expression = simplifyExpression(expression);
+  }
+
+  let operationResult = 0;
+
+  while (expression.length > 1) {
+    for (let i = 0; i < expression.length; i++) {
+      if (expression[i] === "+") {
+        operationResult = expression[i - 1] + expression[i + 1];
+        expression.splice(i - 1, 3, operationResult);
+        break;
+      } else if (expression[i] === "-") {
+        operationResult = expression[i - 1] - expression[i + 1];
+        expression.splice(i - 1, 3, operationResult);
+        break;
+      }
+    }
+  }
+  return expression[0];
+};
+
+const parseOperation = (operation) => {
+  while (operation.includes("(")) {
+    const startParanthesisIndex = operation.indexOf("(");
+    const endParanthesisIndex = operation.indexOf(")");
+    let expression = [];
+    for (let i = startParanthesisIndex + 1; i < endParanthesisIndex; i++) {
+      expression.push(operation[i]);
+    }
+    const parenthesisLength = endParanthesisIndex - startParanthesisIndex;
+    const expressionResult = calculateExpression(expression);
+    operation.splice(
+      startParanthesisIndex,
+      parenthesisLength + 1,
+      expressionResult
+    );
+  }
+
+  return calculateExpression(operation);
 };
 
 const isValidArguments = (arguments) => {
@@ -41,7 +94,7 @@ const getArguments = () => {
 };
 
 const getOperators = () => {
-  return ["+", "-", "*", "/", "%"];
+  return ["+", "-", "*", "/", "%", "(", ")"];
 };
 
 const getOperationResult = () => {
@@ -59,6 +112,8 @@ const getOperationResult = () => {
     }
     operation.push(number);
   }
+
+  return parseOperation(operation);
 };
 
 console.log(getOperationResult());
