@@ -22,7 +22,11 @@ const getShapePosition = () => {
   const arguments = getArguments();
   if (!arguments) return;
   const board = readFile(isValidFile(arguments[0]));
+  if (!board) return;
   const shapeToFind = readFile(isValidFile(arguments[1]));
+  if (!shapeToFind) return;
+
+  const splitedBoard = board.split("\r\n");
 };
 
 console.log(getShapePosition());
