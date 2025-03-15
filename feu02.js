@@ -22,26 +22,40 @@ const getToFindCoordinates = (shapeToFind) => {
   return shape;
 };
 
-const compareShape = (splitedBoard, toFindCoordinates) => {
-  console.log(splitedBoard);
-  console.log(toFindCoordinates);
+const getTopLeftCoord = (splitedBoard, toFindCoordinates) => {
   for (let i = 0; i < splitedBoard.length; i++) {
     for (let j = 0; j < splitedBoard[i].length; j++) {
       if (splitedBoard[i][j] === toFindCoordinates[0].value) {
         let hasSameValue = true;
+
         for (let k = 1; k < toFindCoordinates.length; k++) {
           const coordinatesX = toFindCoordinates[k].x;
           const coordinatesY = toFindCoordinates[k].y;
 
-          if (
-            splitedBoard[i + coordinatesY][j + coordinatesX] !==
-            toFindCoordinates[k].value
-          ) {
-            hasSameValue = false;
-            break;
+          if (coordinatesX <= toFindCoordinates[0].x) {
+            const indexShift = toFindCoordinates[0].x - coordinatesX;
+
+            if (
+              splitedBoard[i + coordinatesY][j - indexShift] !==
+              toFindCoordinates[k].value
+            ) {
+              hasSameValue = false;
+              break;
+            }
+          } else {
+            const indexShift = coordinatesX - toFindCoordinates[0].x;
+
+            if (
+              splitedBoard[i + coordinatesY][j + indexShift] !==
+              toFindCoordinates[k].value
+            ) {
+              hasSameValue = false;
+              break;
+            }
           }
         }
-        if (hasSameValue) return [i, j];
+        if (hasSameValue) return [j, i];
+        else return;
       }
     }
   }
@@ -70,7 +84,7 @@ const getShapePosition = () => {
 
   const splitedBoard = board.split("\r\n");
   const toFindCoordinates = getToFindCoordinates(shapeToFind);
-  return compareShape(splitedBoard, toFindCoordinates);
+  return getTopLeftCoord(splitedBoard, toFindCoordinates);
 };
 
 console.log(getShapePosition());
