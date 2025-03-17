@@ -55,7 +55,25 @@ const getTopLeftCoord = (splitedBoard, toFindCoordinates) => {
           }
         }
         if (hasSameValue) return [j, i];
-        else return;
+      }
+    }
+  }
+};
+
+const resultWithDashes = (splitedBoard, toFindCoordinates) => {
+  let result = "";
+  let coord = 0;
+
+  for (let i = 0; i < splitedBoard.length; i++) {
+    for (let j = 0; j < splitedBoard[i].length; j++) {
+      if (
+        i === toFindCoordinates[coord].y &&
+        j === toFindCoordinates[coord].x
+      ) {
+        result += toFindCoordinates[coord].value;
+        coord++;
+      } else {
+        result += "-";
       }
     }
   }
@@ -84,7 +102,14 @@ const getShapePosition = () => {
 
   const splitedBoard = board.split("\r\n");
   const toFindCoordinates = getToFindCoordinates(shapeToFind);
-  return getTopLeftCoord(splitedBoard, toFindCoordinates);
+
+  const topLeftCoord = getTopLeftCoord(splitedBoard, toFindCoordinates);
+  if (!topLeftCoord) {
+    console.error("Introuvable");
+    return;
+  } else {
+    console.log(`Trouve!\nCoordonnees: ${j}, ${i}\n`);
+  }
 };
 
 console.log(getShapePosition());
