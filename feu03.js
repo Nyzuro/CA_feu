@@ -1,10 +1,5 @@
 const fs = require("fs");
 
-const readFile = (fileName) => {
-  const contents = fs.readFileSync(fileName, "utf8");
-  return contents;
-};
-
 const isValidArguments = (arguments) => {
   if (arguments.length !== 1) {
     console.error(
@@ -21,6 +16,11 @@ const isValidFile = (fileName) => {
     return;
   }
   return fileName;
+};
+
+const readFile = (fileName) => {
+  const contents = fs.readFileSync(fileName, "utf8");
+  return contents;
 };
 
 const getArguments = () => {

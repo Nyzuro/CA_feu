@@ -1,10 +1,5 @@
 const fs = require("fs");
 
-const readFile = (fileName) => {
-  const contents = fs.readFileSync(fileName, "utf8");
-  return contents;
-};
-
 const getToFindCoordinates = (shapeToFind) => {
   const shape = [];
   const splitedShape = shapeToFind.split("\r\n");
@@ -107,6 +102,11 @@ const isValidFile = (fileName) => {
 const getArguments = () => {
   const arguments = process.argv.slice(2);
   return arguments;
+};
+
+const readFile = (fileName) => {
+  const contents = fs.readFileSync(fileName, "utf8");
+  return contents;
 };
 
 const displayShapePosition = () => {
