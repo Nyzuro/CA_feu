@@ -60,23 +60,30 @@ const getTopLeftCoord = (splitedBoard, toFindCoordinates) => {
   }
 };
 
-const resultWithDashes = (splitedBoard, toFindCoordinates) => {
+const getResultWithDashes = (splitedBoard, toFindCoordinates, x, y) => {
+  console.log();
   let result = "";
-  let coord = 0;
 
   for (let i = 0; i < splitedBoard.length; i++) {
     for (let j = 0; j < splitedBoard[i].length; j++) {
-      if (
-        i === toFindCoordinates[coord].y &&
-        j === toFindCoordinates[coord].x
-      ) {
-        result += toFindCoordinates[coord].value;
-        coord++;
-      } else {
-        result += "-";
+      let isPartOfShape = false;
+
+      for (let k = 0; k < toFindCoordinates.length; k++) {
+        const realX = x + (toFindCoordinates[k].x - toFindCoordinates[0].x);
+        const realY = y + (toFindCoordinates[k].y - toFindCoordinates[0].y);
+
+        if (i === realY && j === realX) {
+          result += toFindCoordinates[k].value;
+          isPartOfShape = true;
+          break;
+        }
       }
+      if (!isPartOfShape) result += "-";
     }
+    result += "\n";
   }
+
+  return result;
 };
 
 const isValidFile = (fileName) => {
@@ -92,7 +99,7 @@ const getArguments = () => {
   return arguments;
 };
 
-const getShapePosition = () => {
+const displayShapePosition = () => {
   const arguments = getArguments();
   if (!arguments) return;
   const board = readFile(isValidFile(arguments[0]));
@@ -102,14 +109,22 @@ const getShapePosition = () => {
 
   const splitedBoard = board.split("\r\n");
   const toFindCoordinates = getToFindCoordinates(shapeToFind);
-
   const topLeftCoord = getTopLeftCoord(splitedBoard, toFindCoordinates);
+
   if (!topLeftCoord) {
     console.error("Introuvable");
     return;
   } else {
-    console.log(`Trouve!\nCoordonnees: ${j}, ${i}\n`);
+    const x = topLeftCoord[0];
+    const y = topLeftCoord[1];
+    const resultWithDashes = getResultWithDashes(
+      splitedBoard,
+      toFindCoordinates,
+      x,
+      y
+    );
+    console.log(`Trouve!\nCoordonnees: ${x}, ${y}\n${resultWithDashes}`);
   }
 };
 
-console.log(getShapePosition());
+displayShapePosition();
