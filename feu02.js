@@ -86,6 +86,16 @@ const getResultWithDashes = (splitedBoard, toFindCoordinates, x, y) => {
   return result;
 };
 
+const isValidArguments = (arguments) => {
+  if (arguments.length !== 2) {
+    console.error(
+      "Le programme a besoin d'un tableau et d'une forme a trouver pour fonctionner"
+    );
+    return;
+  }
+  return arguments;
+};
+
 const isValidFile = (fileName) => {
   if (!fs.existsSync(fileName)) {
     console.error("Fichier non trouve");
@@ -100,7 +110,7 @@ const getArguments = () => {
 };
 
 const displayShapePosition = () => {
-  const arguments = getArguments();
+  const arguments = isValidArguments(getArguments());
   if (!arguments) return;
   const board = readFile(isValidFile(arguments[0]));
   if (!board) return;
