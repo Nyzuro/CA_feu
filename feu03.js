@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const countInArray = (numbers, number) => {
-  return numbers.filter((element) => element == number).length;
+  return numbers.filter((element) => element === number).length;
 };
 
 const isValidArguments = (arguments) => {
@@ -30,9 +30,21 @@ const isValidNumber = (number) => {
   return true;
 };
 
-const lineVerification = (splitedGrid) => {};
+const linesVerifications = (parsedSudoku) => {
+  for (const line of parsedSudoku) {
+    if (line.length !== 9) return;
+    for (const number of line)
+      if (number !== ".") if (countInArray(line, number) !== 1) return;
+  }
+  return parsedSudoku;
+};
 
-const isValidSudoku = (splitedGrid) => {};
+const isValidSudoku = (parsedSudoku) => {
+  if (!linesVerifications) {
+    console.error("One of the lines is not correct");
+    return;
+  }
+};
 
 const readFile = (fileName) => {
   const contents = fs.readFileSync(fileName, "utf8");
@@ -68,7 +80,8 @@ const getSudokuResult = () => {
   if (!sudokuGrid) return;
 
   const parsedSudoku = parseSudoku(sudokuGrid);
-  console.log(parsedSudoku);
+  if (!parsedSudoku) return;
+  console.log(linesVerifications(parsedSudoku));
 };
 
 getSudokuResult();
