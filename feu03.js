@@ -53,6 +53,26 @@ const columnsVerifications = (parsedSudoku) => {
   return true;
 };
 
+const isCorrectSubgrids = (parsedSudoku) => {
+  const subgridStart = [0, 3, 6];
+
+  for (const y0 of subgridStart)
+    for (const x0 of subgridStart) {
+      const subgrid = [];
+
+      for (let i = 0; i < 3; i++)
+        for (let j = 0; j < 3; j++) {
+          const number = parsedSudoku[y0 + i][x0 + j];
+
+          if (number !== ".") {
+            if (subgrid.includes(number)) return false;
+          }
+          subgrid.push(number);
+        }
+    }
+  return true;
+};
+
 const isValidSudoku = (parsedSudoku) => {
   if (!linesVerifications(parsedSudoku)) {
     console.error("One of the lines is not correct");
@@ -62,6 +82,11 @@ const isValidSudoku = (parsedSudoku) => {
     console.error("One of the columns is not correct");
     return;
   }
+  if (!isCorrectSubgrids(parsedSudoku)) {
+    console.error("One of the subgrids is not correct");
+    return;
+  }
+  return true;
 };
 
 const readFile = (fileName) => {
