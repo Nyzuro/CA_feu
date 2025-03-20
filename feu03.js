@@ -36,12 +36,30 @@ const linesVerifications = (parsedSudoku) => {
     for (const number of line)
       if (number !== ".") if (countInArray(line, number) !== 1) return;
   }
-  return parsedSudoku;
+  return true;
+};
+
+const columnsVerifications = (parsedSudoku) => {
+  for (let i = 0; i < parsedSudoku.length; i++) {
+    const column = [];
+    for (let j = 0; j < parsedSudoku.length; j++) {
+      column.push(parsedSudoku[j][i]);
+    }
+
+    if (column.length !== 9) return;
+    for (const number of column)
+      if (number !== ".") if (countInArray(column, number) !== 1) return;
+  }
+  return true;
 };
 
 const isValidSudoku = (parsedSudoku) => {
-  if (!linesVerifications) {
+  if (!linesVerifications(parsedSudoku)) {
     console.error("One of the lines is not correct");
+    return;
+  }
+  if (!columnsVerifications(parsedSudoku)) {
+    console.error("One of the columns is not correct");
     return;
   }
 };
@@ -59,8 +77,10 @@ const getArguments = () => {
 const parseSudoku = (sudokuGrid) => {
   const splitedGrid = sudokuGrid.split("\r\n");
   const parsedSudoku = [];
+
   for (let i = 0; i < splitedGrid.length; i++) {
     parsedSudoku[i] = [];
+
     for (let j = 0; j < splitedGrid[i].length; j++) {
       if (splitedGrid[i][j] !== ".") {
         if (!isValidNumber(splitedGrid[i][j])) return;
@@ -81,7 +101,7 @@ const getSudokuResult = () => {
 
   const parsedSudoku = parseSudoku(sudokuGrid);
   if (!parsedSudoku) return;
-  console.log(linesVerifications(parsedSudoku));
+  if (!isValidSudoku(parsedSudoku)) return;
 };
 
 getSudokuResult();
