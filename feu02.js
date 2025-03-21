@@ -30,20 +30,14 @@ const getTopLeftCoord = (splitedBoard, toFindCoordinates) => {
           if (coordinatesX <= toFindCoordinates[0].x) {
             const indexShift = toFindCoordinates[0].x - coordinatesX;
 
-            if (
-              splitedBoard[i + coordinatesY][j - indexShift] !==
-              toFindCoordinates[k].value
-            ) {
+            if (splitedBoard[i + coordinatesY][j - indexShift] !== toFindCoordinates[k].value) {
               hasSameValue = false;
               break;
             }
           } else {
             const indexShift = coordinatesX - toFindCoordinates[0].x;
 
-            if (
-              splitedBoard[i + coordinatesY][j + indexShift] !==
-              toFindCoordinates[k].value
-            ) {
+            if (splitedBoard[i + coordinatesY][j + indexShift] !== toFindCoordinates[k].value) {
               hasSameValue = false;
               break;
             }
@@ -83,9 +77,7 @@ const getResultWithDashes = (splitedBoard, toFindCoordinates, x, y) => {
 
 const isValidArguments = (arguments) => {
   if (arguments.length !== 2) {
-    console.error(
-      "Le programme a besoin d'un tableau et d'une forme a trouver pour fonctionner"
-    );
+    console.error("Le programme a besoin d'un tableau et d'une forme a trouver pour fonctionner");
     return;
   }
   return arguments;
@@ -127,12 +119,7 @@ const displayShapePosition = () => {
   } else {
     const x = topLeftCoord[0];
     const y = topLeftCoord[1];
-    const resultWithDashes = getResultWithDashes(
-      splitedBoard,
-      toFindCoordinates,
-      x,
-      y
-    );
+    const resultWithDashes = getResultWithDashes(splitedBoard, toFindCoordinates, x, y);
     console.log(`Trouve!\nCoordonnees: ${x}, ${y}\n${resultWithDashes}`);
   }
 };
