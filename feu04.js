@@ -40,15 +40,17 @@ const findTheBiggestSquare = (board) => {
             });
           else break;
         }
-        console.log("AVANT:");
-        console.log(linesData);
         const possibleSquareLines = isPossibleSquare(linesData);
         if (possibleSquareLines) {
-          console.log("APRES:");
-          console.log(possibleSquareLines);
+          foundedSquares.push({
+            length: possibleSquareLines.length,
+            y: i,
+            x: j,
+          });
         }
       }
     }
+  console.log(foundedSquares);
 };
 
 const getTheBiggestSquare = () => {
