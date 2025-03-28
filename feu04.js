@@ -13,11 +13,11 @@ const isPossibleSquare = (linesData) => {
   if (linesData.length > 1) {
     for (const line of linesData) {
       if (line.whiteSpacesOnLine < linesData.length) {
-        linesData = linesData.slice(0, line.whiteSpacesOnLine);
-        isPossibleSquare(linesData);
-        return linesData;
+        linesData = linesData.slice(0, linesData.length - 1);
+        return isPossibleSquare(linesData);
       }
     }
+    return linesData;
   } else return false;
 };
 
@@ -40,8 +40,13 @@ const findTheBiggestSquare = (board) => {
             });
           else break;
         }
+        console.log("AVANT:");
+        console.log(linesData);
         const possibleSquareLines = isPossibleSquare(linesData);
-        if (possibleSquareLines) console.log(possibleSquareLines);
+        if (possibleSquareLines) {
+          console.log("APRES:");
+          console.log(possibleSquareLines);
+        }
       }
     }
 };
