@@ -6,6 +6,7 @@ const generateRandomBoard = () => {
     return stdout;
   } catch (error) {
     console.error(`exec error: ${error}`);
+    return;
   }
 };
 
@@ -22,7 +23,7 @@ const isPossibleSquare = (linesData) => {
 };
 
 const findTheBiggestSquare = (board) => {
-  const foundedSquares = [];
+  const findedSquares = [];
   for (let i = 0; i < board.length; i++)
     for (let j = 0; j < board[i].length; j++) {
       if (board[i][j] === ".") {
@@ -42,7 +43,7 @@ const findTheBiggestSquare = (board) => {
         }
         const possibleSquareLines = isPossibleSquare(linesData);
         if (possibleSquareLines) {
-          foundedSquares.push({
+          findedSquares.push({
             length: possibleSquareLines.length,
             y: i,
             x: j,
@@ -50,11 +51,12 @@ const findTheBiggestSquare = (board) => {
         }
       }
     }
-  console.log(foundedSquares);
+  console.log(findedSquares);
 };
 
 const getTheBiggestSquare = () => {
   const randomBoard = generateRandomBoard();
+  if (!randomBoard) return;
   const splitedBoard = randomBoard.split("\n");
   const cleanedBoard = splitedBoard.slice(1, splitedBoard.length - 1);
   console.log(cleanedBoard);
