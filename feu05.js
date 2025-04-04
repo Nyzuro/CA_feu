@@ -1,5 +1,11 @@
 const fs = require("fs");
 
+const Spot = () => {
+  this.f = 0;
+  this.g = 0;
+  this.h = 0;
+};
+
 const getGrid = (map) => {
   const grid = [];
   map = map.split("\n");
@@ -7,6 +13,20 @@ const getGrid = (map) => {
     grid.push([map[i]]);
   }
   return grid;
+};
+
+const setup = (grid) => {
+  const openSet = [];
+  let start = [];
+  let end = [];
+  for (let i = 0; i < grid.length; i++)
+    for (let j = 0; j < grid.length; j++) {
+      new Spot();
+      if (grid[i][j] === "1") start.push({ x: j, y: i });
+      else if (grid[i][j] === "2") end.push({ x: j, y: i });
+    }
+
+  openSet.push(start);
 };
 
 const isValidArgument = (arguments) => {
