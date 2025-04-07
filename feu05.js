@@ -4,7 +4,7 @@ let openSet = [];
 let closedSet = [];
 let start = undefined;
 let ends = [];
-let path;
+let path = [];
 
 const manhattanDistance = (a, b) => {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
@@ -86,13 +86,14 @@ const search = (grid) => {
     let current = openSet[lowestIndex];
 
     if (current.char === "2") {
-      const temp = current;
+      let temp = current;
       path.push(temp);
       while (temp.parent) {
         path.push(temp.parent);
         temp = temp.parent;
       }
       console.log("done");
+      console.log(path.reverse());
       return path.reverse();
     }
 
@@ -103,12 +104,12 @@ const search = (grid) => {
     for (let i = 0; i < neighbors.length; i++) {
       const neighbor = neighbors[i];
 
-      if (!closedSet.includes(neighbor)) {
+      if (!closedSet.includes(neighbor) && neighbor.char !== "*") {
         tempG = current.g + 1;
 
         if (openSet.includes(neighbor)) {
           if (tempG < neighbor.g) {
-            neighbor.g = temp.g;
+            neighbor.g = tempG;
           }
         } else {
           neighbor.g = tempG;
@@ -121,6 +122,8 @@ const search = (grid) => {
       }
     }
   }
+  console.log("No solution");
+  return;
 };
 
 const isValidArgument = (arguments) => {
