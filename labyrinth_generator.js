@@ -25,7 +25,10 @@ for (let y = 0; y < height; y++) {
       row += chars[4];
     } else if (y === height - 1 && x === entry) {
       row += chars[3];
-    } else if ((exit2Side === "left" && x === 0 && y === exit2) || (exit2Side === "right" && x === width - 1 && y === exit2)) {
+    } else if (
+      (exit2Side === "left" && x === 0 && y === exit2) ||
+      (exit2Side === "right" && x === width - 1 && y === exit2)
+    ) {
       row += chars[4];
     } else if (y > 0 && y < height - 1 && x > 0 && x < width - 1) {
       row += Math.random() > 0.2 ? " " : chars[0];

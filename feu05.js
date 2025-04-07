@@ -15,7 +15,6 @@ const AStar = (grid) => {
   let start = undefined;
   let ends = [];
   let path = [];
-  search(grid);
 
   const manhattanDistance = (a, b) => {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
@@ -61,17 +60,18 @@ const AStar = (grid) => {
   }
 
   const setup = (grid) => {
-    for (let i = 0; i < grid.length; i++)
-      for (let j = 0; j < grid[i].length; j++) {
-        const char = grid[i][j];
-        grid[i][j] = new Spot(i, j, char);
-        if (grid[i][j].char === "1") start = grid[i][j];
-        else if (grid[i][j].char === "2") ends.push(grid[i][j]);
+    const nodesGrid = grid.map((row) => [...row]);
+    for (let i = 0; i < nodesGrid.length; i++)
+      for (let j = 0; j < nodesGrid[i].length; j++) {
+        const char = nodesGrid[i][j];
+        nodesGrid[i][j] = new Spot(i, j, char);
+        if (nodesGrid[i][j].char === "1") start = nodesGrid[i][j];
+        else if (nodesGrid[i][j].char === "2") ends.push(nodesGrid[i][j]);
       }
 
-    for (let i = 0; i < grid.length; i++)
-      for (let j = 0; j < grid[i].length; j++) {
-        grid[i][j].addNeighbors(grid);
+    for (let i = 0; i < nodesGrid.length; i++)
+      for (let j = 0; j < nodesGrid[i].length; j++) {
+        nodesGrid[i][j].addNeighbors(nodesGrid);
       }
     openSet.push(start);
   };
@@ -94,7 +94,6 @@ const AStar = (grid) => {
           path.push(temp.parent);
           temp = temp.parent;
         }
-        console.log("done");
         return path.reverse();
       }
 
@@ -126,6 +125,18 @@ const AStar = (grid) => {
     console.log("No solution");
     return;
   };
+  return search(grid);
+};
+
+const getPathVisible = (grid, path) => {
+  for (const node of path) {
+    if (node.char !== "1" && node.char !== "2") {
+      let nodeX = node.x;
+      let nodeY = node.y;
+      grid[nodeX][nodeY] = "o";
+    }
+  }
+  return grid;
 };
 
 const isValidArgument = (arguments) => {
@@ -155,6 +166,9 @@ const getLabyrinthPath = () => {
 
   const path = AStar(grid);
   if (!path) return;
+
+  const solution = getPathVisible(grid, path);
+  solution.map((row) => console.log(row.join("")));
 };
 
 getLabyrinthPath();
