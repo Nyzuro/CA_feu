@@ -59,7 +59,7 @@ const AStar = (grid) => {
     }
   }
 
-  const setup = (grid) => {
+  const init = (grid) => {
     const nodesGrid = grid.map((row) => [...row]);
     for (let i = 0; i < nodesGrid.length; i++)
       for (let j = 0; j < nodesGrid[i].length; j++) {
@@ -76,8 +76,8 @@ const AStar = (grid) => {
     openSet.push(start);
   };
 
-  const search = (grid) => {
-    setup(grid);
+  const findSolution = (grid) => {
+    init(grid);
     while (openSet.length > 0) {
       let lowestIndex = 0;
       for (let i = 0; i < openSet.length; i++) {
@@ -125,7 +125,7 @@ const AStar = (grid) => {
     console.log("No solution");
     return;
   };
-  return search(grid);
+  return findSolution(grid);
 };
 
 const getPathVisible = (grid, path) => {
@@ -156,7 +156,7 @@ const getArguments = () => {
   return arguments;
 };
 
-const getLabyrinthPath = () => {
+const displayLabyrinthPath = () => {
   const arguments = isValidArgument(getArguments());
   if (!arguments) return;
   const argument = arguments[0];
@@ -171,4 +171,4 @@ const getLabyrinthPath = () => {
   solution.map((row) => console.log(row.join("")));
 };
 
-getLabyrinthPath();
+displayLabyrinthPath();
